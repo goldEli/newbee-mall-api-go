@@ -1,0 +1,50 @@
+basePath: /manage-api/v1/
+definitions:
+  response.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+      resultCode:
+        type: integer
+    type: object
+host: localhost:8888
+info:
+  contact:
+    email: support@swagger.io
+    name: 这里写联系人信息
+    url: http://www.swagger.io/support
+  description: 这里写描述信息
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: 这里写标题
+  version: "1.0"
+paths:
+  /createMallAdminUser:
+    post:
+      consumes:
+      - application/json
+      description: 创建AdminUser
+      parameters:
+      - in: query
+        name: loginPassword
+        type: string
+      - in: query
+        name: loginUserName
+        type: string
+      - in: query
+        name: nickName
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 创建AdminUser
+      tags:
+      - 用户相关
+swagger: "2.0"

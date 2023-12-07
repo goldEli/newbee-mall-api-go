@@ -1,0 +1,76 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "这里写描述信息",
+        "title": "这里写标题",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "这里写联系人信息",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8888",
+    "basePath": "/manage-api/v1/",
+    "paths": {
+        "/createMallAdminUser": {
+            "post": {
+                "description": "创建AdminUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关"
+                ],
+                "summary": "创建AdminUser",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "loginPassword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "loginUserName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "nickName",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string"
+                },
+                "resultCode": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

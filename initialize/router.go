@@ -1,15 +1,21 @@
 package initialize
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	gs "github.com/swaggo/gin-swagger"
+	_ "main.go/docs"
 	"main.go/global"
 	"main.go/middleware"
 	"main.go/router"
-	"net/http"
 )
 
 func Routers() *gin.Engine {
 	var Router = gin.Default()
+	// docs.SwaggerInfo.BasePath = "/api/v1"
+	Router.GET("/swagger/*any", gs.WrapHandler(swaggerfiles.Handler))
 	Router.StaticFS(global.GVA_CONFIG.Local.Path, http.Dir(global.GVA_CONFIG.Local.Path)) // 为用户头像和文件提供静态地址
 	//Router.Use(middleware.LoadTls())  // 打开就能玩https了
 	global.GVA_LOG.Info("use middleware logger")

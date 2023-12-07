@@ -1,6 +1,8 @@
 package manage
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"main.go/global"
@@ -10,13 +12,20 @@ import (
 	"main.go/model/manage"
 	manageReq "main.go/model/manage/request"
 	"main.go/utils"
-	"strconv"
 )
 
 type ManageAdminUserApi struct {
 }
 
-// 创建AdminUser
+// CreateAdminUser 创建AdminUser
+// @Summary 创建AdminUser
+// @Description 创建AdminUser
+// @Tags 用户相关
+// @Accept application/json
+// @Produce application/json
+// @Param object query manageReq.MallAdminParam false "查询参数"
+// @Success 200 {object} response.Response
+// @Router /createMallAdminUser [POST]
 func (m *ManageAdminUserApi) CreateAdminUser(c *gin.Context) {
 	var params manageReq.MallAdminParam
 	_ = c.ShouldBindJSON(&params)

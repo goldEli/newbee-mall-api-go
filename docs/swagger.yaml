@@ -1,5 +1,21 @@
 basePath: /manage-api/v1/
 definitions:
+  request.MallAdminLoginParam:
+    properties:
+      passwordMd5:
+        type: string
+      userName:
+        type: string
+    type: object
+  request.MallAdminParam:
+    properties:
+      loginPassword:
+        type: string
+      loginUserName:
+        type: string
+      nickName:
+        type: string
+    type: object
   response.Response:
     properties:
       data: {}
@@ -11,32 +27,70 @@ definitions:
 host: localhost:8888
 info:
   contact:
-    email: support@swagger.io
-    name: 这里写联系人信息
-    url: http://www.swagger.io/support
-  description: 这里写描述信息
+    email: miaoyu2009@qq.com
+    name: miaoyu2009@qq.com
+    url: miaoyu2009@qq.com
+  description: Mall description
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: 这里写标题
+  title: Mall
   version: "1.0"
 paths:
+  /adminUser/login:
+    post:
+      consumes:
+      - application/json
+      description: 管理员登陆
+      parameters:
+      - description: 账号密码
+        in: body
+        name: name
+        required: true
+        schema:
+          $ref: '#/definitions/request.MallAdminLoginParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 管理员登陆
+      tags:
+      - admin
+  /adminUser/profile:
+    get:
+      consumes:
+      - application/json
+      description: 用id查询AdminUser
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 用id查询AdminUser
+      tags:
+      - admin
   /createMallAdminUser:
     post:
       consumes:
       - application/json
       description: 创建AdminUser
       parameters:
-      - in: query
-        name: loginPassword
-        type: string
-      - in: query
-        name: loginUserName
-        type: string
-      - in: query
-        name: nickName
-        type: string
+      - description: 查询参数
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/request.MallAdminParam'
       produces:
       - application/json
       responses:
@@ -46,5 +100,5 @@ paths:
             $ref: '#/definitions/response.Response'
       summary: 创建AdminUser
       tags:
-      - 用户相关
+      - admin
 swagger: "2.0"

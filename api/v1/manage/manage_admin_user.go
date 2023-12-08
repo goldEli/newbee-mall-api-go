@@ -20,10 +20,10 @@ type ManageAdminUserApi struct {
 // CreateAdminUser 创建AdminUser
 // @Summary 创建AdminUser
 // @Description 创建AdminUser
-// @Tags 用户相关
+// @Tags admin
 // @Accept application/json
 // @Produce application/json
-// @Param object query manageReq.MallAdminParam false "查询参数"
+// @Param request body manageReq.MallAdminParam false "查询参数"
 // @Success 200 {object} response.Response
 // @Router /createMallAdminUser [POST]
 func (m *ManageAdminUserApi) CreateAdminUser(c *gin.Context) {
@@ -77,6 +77,13 @@ func (m *ManageAdminUserApi) UpdateAdminUserName(c *gin.Context) {
 }
 
 // AdminUserProfile 用id查询AdminUser
+// @Summary 用id查询AdminUser
+// @Description 用id查询AdminUser
+// @Tags admin
+// @Accept application/json
+// @Produce application/json
+// @Success 200 {object} response.Response
+// @Router /adminUser/profile [GET]
 func (m *ManageAdminUserApi) AdminUserProfile(c *gin.Context) {
 	// adminToken := c.GetHeader("token")
 	if err, mallAdminUser := mallAdminUserService.GetMallAdminUser(c); err != nil {
@@ -89,6 +96,14 @@ func (m *ManageAdminUserApi) AdminUserProfile(c *gin.Context) {
 }
 
 // AdminLogin 管理员登陆
+// @Summary 管理员登陆
+// @Description 管理员登陆
+// @Tags admin
+// @Accept application/json
+// @Produce application/json
+// @Param name body manageReq.MallAdminLoginParam true "账号密码"
+// @Success 200 {object} response.Response{data=string}
+// @Router /adminUser/login [POST]
 func (m *ManageAdminUserApi) AdminLogin(c *gin.Context) {
 	var adminLoginParams manageReq.MallAdminLoginParam
 	_ = c.ShouldBindJSON(&adminLoginParams)

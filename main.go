@@ -8,14 +8,14 @@ import (
 	"main.go/initialize"
 )
 
-// @title 这里写标题
+// @title Mall
 // @version 1.0
-// @description 这里写描述信息
+// @description Mall description
 // @termsOfService http://swagger.io/terms/
 
-// @contact.name 这里写联系人信息
-// @contact.url http://www.swagger.io/support
-// @contact.email support@swagger.io
+// @contact.name miaoyu2009@qq.com
+// @contact.url miaoyu2009@qq.com
+// @contact.email miaoyu2009@qq.com
 
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html

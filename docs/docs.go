@@ -11,9 +11,9 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "这里写联系人信息",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
+            "name": "miaoyu2009@qq.com",
+            "url": "miaoyu2009@qq.com",
+            "email": "miaoyu2009@qq.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -24,6 +24,75 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/adminUser/login": {
+            "post": {
+                "description": "管理员登陆",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "管理员登陆",
+                "parameters": [
+                    {
+                        "description": "账号密码",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.MallAdminLoginParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/adminUser/profile": {
+            "get": {
+                "description": "用id查询AdminUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "用id查询AdminUser",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/createMallAdminUser": {
             "post": {
                 "description": "创建AdminUser",
@@ -34,24 +103,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户相关"
+                    "admin"
                 ],
                 "summary": "创建AdminUser",
                 "parameters": [
                     {
-                        "type": "string",
-                        "name": "loginPassword",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "loginUserName",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "nickName",
-                        "in": "query"
+                        "description": "查询参数",
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/request.MallAdminParam"
+                        }
                     }
                 ],
                 "responses": {
@@ -66,6 +128,31 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "request.MallAdminLoginParam": {
+            "type": "object",
+            "properties": {
+                "passwordMd5": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.MallAdminParam": {
+            "type": "object",
+            "properties": {
+                "loginPassword": {
+                    "type": "string"
+                },
+                "loginUserName": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
+                }
+            }
+        },
         "response.Response": {
             "type": "object",
             "properties": {
@@ -87,8 +174,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8888",
 	BasePath:         "/manage-api/v1/",
 	Schemes:          []string{},
-	Title:            "这里写标题",
-	Description:      "这里写描述信息",
+	Title:            "Mall",
+	Description:      "Mall description",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

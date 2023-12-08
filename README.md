@@ -1,6 +1,12 @@
 ![](static-files/newbee-mall.png)
 
-* 初始化数据 /api/v1/index-infos
+### Update doc
+
+```shell
+swag init
+```
+
+### build
 
 ```shell
 GVA_CONFIG=config.prod.yaml go build main.go

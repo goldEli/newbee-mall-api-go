@@ -12,6 +12,12 @@ mysql:
   max-open-conns: 0
   log-mode: ""
   log-zap: false
+redis:
+  host: 127.0.0.1
+  port: 6379
+  secretKey: "111111"
+  db: 0
+
 system:
   addr: 8888
   db-type: mysql

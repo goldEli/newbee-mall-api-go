@@ -7,4 +7,6 @@ type Server struct {
 	Mysql Mysql `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
 	// oss
 	Local Local `mapstructure:"local" json:"local" yaml:"local"`
+	// redis
+	Redis Redis `mapstructure:"redis" json:"redis" yaml:"redis"`
 }

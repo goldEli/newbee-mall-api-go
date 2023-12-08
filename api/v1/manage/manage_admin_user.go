@@ -78,8 +78,8 @@ func (m *ManageAdminUserApi) UpdateAdminUserName(c *gin.Context) {
 
 // AdminUserProfile 用id查询AdminUser
 func (m *ManageAdminUserApi) AdminUserProfile(c *gin.Context) {
-	adminToken := c.GetHeader("token")
-	if err, mallAdminUser := mallAdminUserService.GetMallAdminUser(adminToken); err != nil {
+	// adminToken := c.GetHeader("token")
+	if err, mallAdminUser := mallAdminUserService.GetMallAdminUser(c); err != nil {
 		global.GVA_LOG.Error("未查询到记录", zap.Error(err))
 		response.FailWithMessage("未查询到记录", c)
 	} else {
@@ -95,7 +95,7 @@ func (m *ManageAdminUserApi) AdminLogin(c *gin.Context) {
 	if err, _, adminToken := mallAdminUserService.AdminLogin(adminLoginParams); err != nil {
 		response.FailWithMessage("登陆失败", c)
 	} else {
-		response.OkWithData(adminToken.Token, c)
+		response.OkWithData(adminToken, c)
 	}
 }
 

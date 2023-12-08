@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"main.go/core"
 	"main.go/global"
 	"main.go/initialize"
@@ -22,9 +24,15 @@ import (
 // @BasePath /manage-api/v1/
 func main() {
 
-	global.GVA_VP = core.Viper()      // 初始化Viper
-	global.GVA_LOG = core.Zap()       // 初始化zap日志库
-	global.GVA_DB = initialize.Gorm() // gorm连接数据库
+	global.GVA_VP = core.Viper()              // 初始化Viper
+	global.GVA_LOG = core.Zap()               // 初始化zap日志库
+	global.GVA_REDIS = initialize.RedisInit() // redis
+	global.GVA_DB = initialize.Gorm()         // gorm连接数据库
+	err1 := global.GVA_REDIS.Set("123", "555555", time.Hour).Err()
 
+	if err1 != nil {
+		global.GVA_LOG.Error("eeeeeeeeeeeee")
+		return
+	}
 	core.RunWindowsServer()
 }

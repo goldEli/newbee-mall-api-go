@@ -1,10 +1,13 @@
 package middleware
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
+	"main.go/global"
 	"main.go/model/common/response"
 	"main.go/service"
-	"time"
 )
 
 var manageAdminUserTokenService = service.ServiceGroupApp.ManageServiceGroup.ManageAdminUserTokenService
@@ -14,25 +17,52 @@ func AdminJWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		if token == "" {
-			response.FailWithDetailed(nil, "未登录或非法访问", c)
+			response.FailWithDetailed(nil, "未登录或登陆失效", c)
 			c.Abort()
 			return
 		}
-		err, mallAdminUserToken := manageAdminUserTokenService.ExistAdminToken(token)
+		tokenClaims, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+			return []byte(global.GVA_CONFIG.Redis.SecretKey), nil
+		})
+		// err, mallAdminUserToken := manageAdminUserTokenService.ExistAdminToken(token)
 		if err != nil {
-			response.FailWithDetailed(nil, "未登录或非法访问", c)
+			response.FailWithDetailed(nil, "未登录或登陆失效", c)
 			c.Abort()
 			return
 		}
-		if time.Now().After(mallAdminUserToken.ExpireTime) {
+		if !tokenClaims.Valid {
 			response.FailWithDetailed(nil, "授权已过期", c)
-			err = manageAdminUserTokenService.DeleteMallAdminUserToken(token)
-			if err != nil {
+			c.Abort()
+			return
+		}
+		if claims, ok := tokenClaims.Claims.(jwt.MapClaims); ok && tokenClaims.Valid {
+			if float64(time.Now().Unix()) > claims["exp"].(float64) {
+				// response.FailWithCode(response.ResponseCodeUnauthorized, ctx)
+				// ctx.AbortWithStatus(http.StatusUnauthorized)
+				response.FailWithDetailed(nil, "授权已过期", c)
+				c.Abort()
 				return
 			}
-			c.Abort()
-			return
+
+			userName, ok := claims["userName"].(string)
+			if ok {
+				// 通过key获取redis
+				key := userName
+				redisToken := global.GVA_REDIS.Get(key).Val()
+				if token != redisToken {
+					// response.FailWithCode(response.ResponseCodeUnauthorized, ctx)
+					response.FailWithDetailed(nil, "未登录或登陆失效", c)
+					c.Abort()
+					return
+				}
+				c.Set("userName", userName)
+			} else {
+				response.FailWithDetailed(nil, "未登录或登陆失效", c)
+				c.Abort()
+				return
+			}
 		}
+
 		c.Next()
 	}
 
@@ -56,6 +86,7 @@ func UserJWTAuth() gin.HandlerFunc {
 			response.FailWithDetailed(nil, "授权已过期", c)
 			err = mallUserTokenService.DeleteMallUserToken(token)
 			if err != nil {
+				response.FailWithDetailed(nil, "未登录或登陆失效", c)
 				return
 			}
 			c.Abort()

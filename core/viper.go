@@ -3,11 +3,12 @@ package core
 import (
 	"flag"
 	"fmt"
+	"os"
+
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"main.go/global"
 	"main.go/utils"
-	"os"
 )
 
 func Viper(path ...string) *viper.Viper {

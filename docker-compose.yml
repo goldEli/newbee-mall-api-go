@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web1:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis-container
+      - mysql-container
+  mysql-container:
+    image: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - E:\mysql:/var/lib/mysql
+  redis-container:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - E:\redis:/data

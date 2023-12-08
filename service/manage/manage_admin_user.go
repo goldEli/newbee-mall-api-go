@@ -95,7 +95,7 @@ func (m *ManageAdminUserService) AdminLogin(params manageReq.MallAdminLoginParam
 			global.GVA_LOG.Error("redis 生成token失败")
 			return
 		}
-		key := mallAdminUser.LoginUserName
+		key := "auth_" + mallAdminUser.LoginUserName
 		err1 := global.GVA_REDIS.Set(key, tokenString, time.Hour).Err()
 		global.GVA_LOG.Info("token: " + tokenString)
 		global.GVA_LOG.Info("key: " + key)

@@ -26,12 +26,12 @@ func AdminJWTAuth() gin.HandlerFunc {
 		})
 		// err, mallAdminUserToken := manageAdminUserTokenService.ExistAdminToken(token)
 		if err != nil {
-			response.FailWithDetailed(nil, "未登录或登陆失效", c)
+			response.UnLogin(nil, c)
 			c.Abort()
 			return
 		}
 		if !tokenClaims.Valid {
-			response.FailWithDetailed(nil, "授权已过期", c)
+			response.UnLogin(nil, c)
 			c.Abort()
 			return
 		}
@@ -39,7 +39,7 @@ func AdminJWTAuth() gin.HandlerFunc {
 			if float64(time.Now().Unix()) > claims["exp"].(float64) {
 				// response.FailWithCode(response.ResponseCodeUnauthorized, ctx)
 				// ctx.AbortWithStatus(http.StatusUnauthorized)
-				response.FailWithDetailed(nil, "授权已过期", c)
+				response.UnLogin(nil, c)
 				c.Abort()
 				return
 			}
@@ -47,17 +47,17 @@ func AdminJWTAuth() gin.HandlerFunc {
 			userName, ok := claims["userName"].(string)
 			if ok {
 				// 通过key获取redis
-				key := userName
+				key := "auth_" + userName
 				redisToken := global.GVA_REDIS.Get(key).Val()
 				if token != redisToken {
 					// response.FailWithCode(response.ResponseCodeUnauthorized, ctx)
-					response.FailWithDetailed(nil, "未登录或登陆失效", c)
+					response.UnLogin(nil, c)
 					c.Abort()
 					return
 				}
 				c.Set("userName", userName)
 			} else {
-				response.FailWithDetailed(nil, "未登录或登陆失效", c)
+				response.UnLogin(nil, c)
 				c.Abort()
 				return
 			}

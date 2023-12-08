@@ -1,8 +1,9 @@
 package response
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Response struct {
@@ -14,7 +15,7 @@ type Response struct {
 const (
 	ERROR   = 500
 	SUCCESS = 200
-	UNLOGIN = 416
+	UNLOGIN = 401
 )
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
@@ -55,5 +56,5 @@ func FailWithDetailed(data interface{}, message string, c *gin.Context) {
 }
 
 func UnLogin(data interface{}, c *gin.Context) {
-	Result(UNLOGIN, data, "未登录！", c)
+	Result(UNLOGIN, data, "请登录！", c)
 }

@@ -28,11 +28,7 @@ func main() {
 	global.GVA_LOG = core.Zap()               // 初始化zap日志库
 	global.GVA_REDIS = initialize.RedisInit() // redis
 	global.GVA_DB = initialize.Gorm()         // gorm连接数据库
-	err1 := global.GVA_REDIS.Set("123", "555555", time.Hour).Err()
+	global.GVA_REDIS.Set("server_start_time", time.Now(), time.Hour).Err()
 
-	if err1 != nil {
-		global.GVA_LOG.Error("eeeeeeeeeeeee")
-		return
-	}
 	core.RunWindowsServer()
 }

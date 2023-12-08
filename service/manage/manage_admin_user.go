@@ -88,6 +88,7 @@ func (m *ManageAdminUserService) AdminLogin(params manageReq.MallAdminLoginParam
 		// generate jwt token
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 			"userName": mallAdminUser.LoginUserName,
+			"userId":   mallAdminUser.AdminUserId,
 			"exp":      time.Now().Add(time.Hour * 24 * 30).Unix(),
 		})
 		tokenString, err2 := token.SignedString([]byte(global.GVA_CONFIG.Redis.SecretKey))

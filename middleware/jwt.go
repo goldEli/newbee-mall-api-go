@@ -45,6 +45,8 @@ func AdminJWTAuth() gin.HandlerFunc {
 			}
 
 			userName, ok := claims["userName"].(string)
+			// 获取userId
+			userId := int(tokenClaims.Claims.(jwt.MapClaims)["userId"].(float64))
 			if ok {
 				// 通过key获取redis
 				key := "auth_" + userName
@@ -56,6 +58,7 @@ func AdminJWTAuth() gin.HandlerFunc {
 					return
 				}
 				c.Set("userName", userName)
+				c.Set("userId", userId)
 			} else {
 				response.UnLogin(nil, c)
 				c.Abort()
